@@ -80,22 +80,25 @@ int main() { // Yes, it has to have an int for the return type
 
     // First with a for loop
     for (int i = 10; i <= 20; i++) {
-        cout << i << endl;
+        cout << i << " ";
     }
+    cout << endl;
 
     // Then with a while loop
     int i = 10;
     while (i <= 20) {
-        cout << i << endl;
+        cout << i << " ";
         i++;
     }
+    cout << endl;
 
     // Finally with a do-while loop
     i = 10;
     do {
-        cout << i << endl;
+        cout << i << " ";
         i++;
     } while (i <= 20);
+    cout << endl;
 
 
     // Task 8  Looping to successfully open a file, asking user for the name
@@ -154,26 +157,30 @@ int main() { // Yes, it has to have an int for the return type
     // Task 13 Displaying the vector THREE times
     //         a) using the indices,
     for (size_t i = 0; i < range.size(); i++) {
-        cout << range[i] << endl;
+        cout << range[i] << " ";
     }
+    cout << endl;
 
     //         b) using a "ranged for"
     for (int i : range) {
-        cout << i << endl;
+        cout << i << " ";
     }
+    cout << endl;
 
     //         c) using indices again but backwards
     for (size_t i = range.size(); i > 0; i--) {
-        cout << range[i - 1] << endl;
+        cout << range[i - 1] << " ";
     }
+    cout << endl;
 
 
     // Task 14. Initialize a vector with the primes less than 20. 
     vector<int> primes{ 2, 3, 5, 7, 11, 13, 17, 19 };
 
     for (int i : primes) {
-        cout << i << endl;
+        cout << i << " ";
     }
+    cout << endl;
 
     //
     // Function calls
