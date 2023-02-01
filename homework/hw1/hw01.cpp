@@ -1,6 +1,7 @@
 // hw01.cpp
 // Author: Shounak Ghosh
-// Decrypt a caesar cypher message
+// Decrypt a caesar cypher message given a shift distance 
+// and reverse the order of the message lines, as per the problem statement
 
 #include <iostream>
 #include <fstream>
@@ -14,7 +15,7 @@ void decrypt_string(string&, int); // function prototype for decrypt_string
 
 /**
  * @brief decrypts a string using a caesar cypher
- * 
+ *
  * @return int 0 on success
  */
 int main() {
@@ -31,7 +32,7 @@ int main() {
     vector<string> lines;
 
     infile >> shift; // read the shift value
-    infile.ignore(); // ignore the newline character
+    getline(infile, line); // ignore the newline character
 
     // read the file line by line
     while (getline(infile, line)) {
@@ -39,9 +40,11 @@ int main() {
     }
     infile.close(); // close the file
 
-    // print the lines
+
     // size_t is an unsigned integer type used for array indexing
-    for (size_t i = lines.size(); i > 0; i--) { 
+    // loop through the lines in reverse order and decrypt,
+    // as per the problem statement
+    for (size_t i = lines.size(); i > 0; i--) {
         decrypt_string(lines[i - 1], shift);
         cout << lines[i - 1] << endl;
     }
@@ -58,7 +61,7 @@ int main() {
 char decrypt_char(char chr, int shift) {
     // check if the character is an uppercase letter and decrypt it
     // otherwise, return the character as is
-    if (isalpha(chr) && isupper(chr))
+    if (chr >= 'A' && chr <= 'Z')
         return (chr - 'A' - shift + 26) % 26 + 'A';
     else
         return chr;
