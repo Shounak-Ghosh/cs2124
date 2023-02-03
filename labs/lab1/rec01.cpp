@@ -35,7 +35,7 @@ int main() { // Yes, it has to have an int for the return type
 
 
     // Task 2  Printing hello ...  Using "using namespace"
-    
+
     cout << "Hello, world!" << endl;
 
     //
@@ -108,7 +108,7 @@ int main() { // Yes, it has to have an int for the return type
         cout << "Enter a filename: ";
         cin >> filename;
         file.open(filename);
-        
+
     }
 
 
@@ -130,7 +130,7 @@ int main() { // Yes, it has to have an int for the return type
     }
     file.close();
     cout << "Sum: " << sum << endl;
-    
+
 
 
 
@@ -149,8 +149,8 @@ int main() { // Yes, it has to have an int for the return type
 
     // Task 12 Filling a vector of ints
     vector<int> range;
-    for (int i = 10; i <= 100; i+=2) {
-            range.push_back(i);
+    for (int i = 10; i <= 100; i += 2) {
+        range.push_back(i);
     }
 
 
