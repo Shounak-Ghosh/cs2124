@@ -73,7 +73,6 @@ int main() {
             cerr << "Error: invalid command" << endl;
         }
     }
-
     return 0;
 }
 
@@ -124,8 +123,13 @@ void add_warrior(vector<warrior>& warriors, const string& name, int strength) {
 void do_battle(warrior& warrior1, warrior& warrior2) {
     // initial print announcing the battle
     cout << warrior1.name << " battles " << warrior2.name << endl;
+    // a warrior cannot battle themselves
+    if (warrior1.name == warrior2.name)
+    {
+        cerr << "Error: Warrior cannot battle themselves." << endl;
+    }
     // both warriors are dead
-    if (warrior1.strength == 0 && warrior2.strength == 0) {
+    else if (warrior1.strength == 0 && warrior2.strength == 0) {
         cout << "Oh, NO! They're both dead! Yuck!" << endl;
     }
     // one warrior is dead

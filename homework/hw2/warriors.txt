@@ -4,6 +4,7 @@ Warrior Arthur 15
 Warrior Torvalds 20
 Warrior Gates 8
 Status
+Battle Arthur Arthur
 Battle Arthur Lancelot
 Battle Jim Lancelot
 Battle Torvalds Gates
