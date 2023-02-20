@@ -73,8 +73,7 @@ private:
 
     // private variables for the Warrior class
     string name;
-    Weapon weapon; // TODO: an empty weapon is created here, then the weapon is set in the constructor
-
+    Weapon weapon; 
 public:
     /**
      * @brief Construct a new Warrior object
@@ -179,6 +178,7 @@ int main() {
             cerr << "Error: invalid command" << endl;
         }
     }
+    infile.close();
     return 0;
 }
 
