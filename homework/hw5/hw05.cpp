@@ -13,30 +13,73 @@
 #include <fstream>
 using namespace std;
 
+/**
+ * @brief Simulates a Warrior, as per the problem statement
+ *
+ */
 class Warrior {
 public:
+    /**
+     * @brief Construct a new Warrior object
+     *
+     * @param name the name of the warrior
+     * @param strength the strength of the warrior
+     */
     Warrior(const string& name, int strength): name(name), strength(strength), employed(false) {}
 
-    string getName() const {
+    /**
+     * @brief Get the name of the warrior
+     *
+     * @return const string& the name of the warrior
+     */
+    const string& getName() const {
         return name;
     }
 
-    int getStrength() const {
+    /**
+     * @brief Get the strength of the warrior
+     *
+     * @return const int the strength of the warrior
+     */
+    const int getStrength() const {
         return strength;
     }
 
+    /**
+     * @brief Set the strength of the warrior
+     *
+     * @param strength the new strength of the warrior
+     */
     void setStrength(int strength) {
         this->strength = strength;
     }
 
-    bool isEmployed() const {
+    /**
+     * @brief Check if the warrior is employed
+     *
+     * @return true if the warrior is employed
+     * @return false otherwise
+     */
+    const bool isEmployed() const {
         return employed;
     }
 
+    /**
+     * @brief Set the employed status of the warrior
+     *
+     * @param employed the new employed status of the warrior
+     */
     void setEmployed(bool employed) {
         this->employed = employed;
     }
 
+    /**
+     * @brief Overload the output operator for the warrior class
+     *
+     * @param os the output stream
+     * @param warrior the warrior to output
+     * @return ostream& the output stream
+     */
     friend ostream& operator<<(ostream& os, const Warrior& warrior);
 private:
     string name;
@@ -44,14 +87,35 @@ private:
     bool employed;
 };
 
+/**
+ * @brief Simulates a Noble, as per the problem statement
+ *
+ */
 class Noble {
 public:
+    /**
+     * @brief Construct a new Noble object
+     *
+     * @param name the name of the noble
+     */
     Noble(const string& name): name(name), alive(true) {}
 
-    string getName() const {
+    /**
+     * @brief Get the name of the noble
+     *
+     * @return string the name of the noble
+     */
+    const string& getName() const {
         return name;
     }
 
+    /**
+     * @brief Hire a warrior for the noble
+     *
+     * @param warrior the warrior to hire
+     * @return true if the warrior was hired
+     * @return false otherwise
+     */
     bool hire(Warrior& warrior) {
         if (!warrior.isEmployed()) {
             army.push_back(&warrior);
@@ -59,23 +123,35 @@ public:
             return true;
         }
         else {
-            cerr << "Warrior " << warrior.getName() << " is already employed" << endl;
+            cout << name << " failed to fire " << warrior.getName() << endl;
             return false;
         }
     }
 
+    /**
+     * @brief Fire a warrior from the noble
+     *
+     * @param warrior the warrior to fire
+     * @return true if the warrior was fired
+     * @return false otherwise
+     */
     bool fire(Warrior& warrior) {
         for (size_t i = 0; i < army.size(); ++i) {
             if (army[i] == &warrior) {
                 army.erase(army.begin() + i); //TODO: check if this is allowed
                 warrior.setEmployed(false);
+                cout << warrior.getName() <<  ", you don't work for me any more! -- " << name << endl;
                 return true;
             }
         }
-        cerr << "Warrior " << warrior.getName() << " is not employed by " << name << endl;
         return false;
     }
 
+    /**
+     * @brief Get the noble's army strength
+     *
+     * @return double returns the army strength
+     */
     double getArmyStrength() const {
         double strength = 0;
         for (Warrior* warrior : army) {
@@ -84,13 +160,23 @@ public:
         return strength;
     }
 
+    /**
+      * @brief Sets the strength of all the noble's warriors to 0,
+      *        and sets the noble's alive status to false
+      *
+      */
     void uponDeath() {
         for (size_t i = 0; i < army.size(); ++i) {
             army[i]->setStrength(0);
         }
-
+        alive = false;
     }
 
+    /**
+     * @brief Do battle with another noble
+     *
+     * @param otherNoble the other noble
+     */
     void battle(Noble& otherNoble) {
         cout << name << " battles " << otherNoble.name << endl;
 
@@ -132,6 +218,13 @@ public:
 
     }
 
+    /**
+     * @brief Overload the output operator for the noble class
+     *
+     * @param os the output stream
+     * @param noble the noble to output
+     * @return ostream& the output stream
+     */
     friend ostream& operator<<(ostream& os, const Noble& noble);
 private:
     string name;
@@ -145,6 +238,11 @@ ostream& operator<<(ostream& os, const Noble& noble);
 Warrior* getWarrior(const string& name, const vector<Warrior*>& warriors);
 Noble* getNoble(const string& name, const vector<Noble*>& nobles);
 
+/**
+ * @brief Stimulate a game of medieval times, as per the problem statement
+ *
+ * @return int 0 on success
+ */
 int main() {
     ifstream ifs("nobleWarriors.txt");
 
@@ -190,7 +288,7 @@ int main() {
                 cerr << "Noble " << nobleName << " does not exist" << endl;
             }
             else if (warrior == nullptr) {
-                cerr << "Warrior " << warriorName << " does not exist" << endl;
+                cerr << "Attempting to hire using unknown warrior: " << warriorName << endl;
             }
             else {
                 noble->hire(*warrior);
@@ -245,7 +343,7 @@ int main() {
             for (size_t i = 0; i < warriors.size(); ++i) {
                 if (!warriors[i]->isEmployed()) {
                     unemployedWarriors++;
-                    cout << *warriors[i] << endl;
+                    cout << "\t" << *warriors[i] << endl;
                 }
             }
 
@@ -271,11 +369,25 @@ int main() {
     }
 }
 
+/**
+ * @brief Overload the output operator for the Warrior class
+ *
+ * @param os the output stream
+ * @param warrior the warrior to output
+ * @return ostream& the output stream
+ */
 ostream& operator<<(ostream& os, const Warrior& warrior) {
     os << warrior.name << ": " << warrior.strength;
     return os;
 }
 
+/**
+ * @brief Overload the output operator for the Noble class
+ *
+ * @param os the output stream
+ * @param noble the noble to output
+ * @return ostream& the output stream
+ */
 ostream& operator<<(ostream& os, const Noble& noble) {
     os << noble.name << " has an army of " << noble.army.size();
     for (Warrior* warrior : noble.army) {
@@ -284,6 +396,14 @@ ostream& operator<<(ostream& os, const Noble& noble) {
     return os;
 }
 
+/**
+ * @brief Get a warrior from a vector of warriors
+ *
+ * @param name the name of the warrior to get
+ * @param warriors the vector of warriors
+ * @return Warrior* the warrior with the given name,
+ *         or nullptr if it does not exist
+ */
 Warrior* getWarrior(const string& name, const vector<Warrior*>& warriors) {
     for (size_t i = 0; i < warriors.size(); ++i) {
         if (warriors[i]->getName() == name) {
@@ -293,6 +413,14 @@ Warrior* getWarrior(const string& name, const vector<Warrior*>& warriors) {
     return nullptr;
 }
 
+/**
+ * @brief Get the Noble object
+ * 
+ * @param name the name of the noble to get
+ * @param nobles the vector of nobles
+ * @return Noble* the noble with the given name, 
+ *         or nullptr if it does not exist
+ */
 Noble* getNoble(const string& name, const vector<Noble*>& nobles) {
     for (size_t i = 0; i < nobles.size(); ++i) {
         if (nobles[i]->getName() == name) {
