@@ -136,15 +136,33 @@ public:
      * @return false otherwise
      */
     bool fire(Warrior& warrior) {
-        for (size_t i = 0; i < army.size(); ++i) {
-            if (army[i] == &warrior) {
-                army.erase(army.begin() + i); //TODO: check if this is allowed
-                warrior.setEmployed(false);
-                cout << warrior.getName() <<  ", you don't work for me any more! -- " << name << endl;
-                return true;
-            }
-        }
-        return false;
+        size_t warriorPosition = army.size();
+          for (size_t i = 0; i < army.size(); ++i) {
+               if (army[i] == &warrior) { // direct comparison of addresses
+                    if (alive) { // a noble must be alive to fire a warrior
+                         cout << warrior.getName() <<
+                              " you don't work for me any more! -- " <<
+                              name << endl;
+                         warrior.setEmployed(false);
+                         warriorPosition = i;
+                    }
+               }
+          }
+          // the warrior is employed by this noble
+          if (warriorPosition != army.size()) {
+               // shift the pointers left by one, 
+               //starting from the warrior's position
+               for (size_t i = warriorPosition; i < army.size() - 1; ++i) {
+                    army[i] = army[i + 1];
+               }
+               // remove the last element
+               army.pop_back();
+               return true;
+          }
+          else {
+               cout << name << " failed to fire " << warrior.getName() << endl;
+               return false;
+          }
     }
 
     /**
@@ -161,7 +179,7 @@ public:
     }
 
     /**
-      * @brief Sets the strength of all the noble's warriors to 0,
+      * @brief Sets the strength of all the noble's army to 0,
       *        and sets the noble's alive status to false
       *
       */
@@ -235,7 +253,7 @@ private:
 // function prototypes
 ostream& operator<<(ostream& os, const Warrior& warrior);
 ostream& operator<<(ostream& os, const Noble& noble);
-Warrior* getWarrior(const string& name, const vector<Warrior*>& warriors);
+Warrior* getWarrior(const string& name, const vector<Warrior*>& army);
 Noble* getNoble(const string& name, const vector<Noble*>& nobles);
 
 /**
@@ -253,7 +271,7 @@ int main() {
 
     string command;
     vector<Noble*> nobles;
-    vector<Warrior*> warriors;
+    vector<Warrior*> army;
 
 
     while (ifs >> command) {
@@ -271,11 +289,11 @@ int main() {
             string name;
             int strength;
             ifs >> name >> strength;
-            if (getWarrior(name, warriors) != nullptr) {
+            if (getWarrior(name, army) != nullptr) {
                 cerr << "Warrior " << name << " already exists" << endl;
             }
             else {
-                warriors.push_back(new Warrior(name, strength));
+                army.push_back(new Warrior(name, strength));
             }
         }
         else if (command == "Hire") {
@@ -283,7 +301,7 @@ int main() {
             string warriorName;
             ifs >> nobleName >> warriorName;
             Noble* noble = getNoble(nobleName, nobles);
-            Warrior* warrior = getWarrior(warriorName, warriors);
+            Warrior* warrior = getWarrior(warriorName, army);
             if (noble == nullptr) {
                 cerr << "Noble " << nobleName << " does not exist" << endl;
             }
@@ -299,7 +317,7 @@ int main() {
             string warriorName;
             ifs >> nobleName >> warriorName;
             Noble* noble = getNoble(nobleName, nobles);
-            Warrior* warrior = getWarrior(warriorName, warriors);
+            Warrior* warrior = getWarrior(warriorName, army);
             if (noble == nullptr) {
                 cerr << "Noble " << nobleName << " does not exist" << endl;
             }
@@ -340,14 +358,14 @@ int main() {
             }
             cout << "\nUnemployed Warriors:" << endl;
             int unemployedWarriors = 0;
-            for (size_t i = 0; i < warriors.size(); ++i) {
-                if (!warriors[i]->isEmployed()) {
+            for (size_t i = 0; i < army.size(); ++i) {
+                if (!army[i]->isEmployed()) {
                     unemployedWarriors++;
-                    cout << "\t" << *warriors[i] << endl;
+                    cout << "\t" << *army[i] << endl;
                 }
             }
 
-            if (warriors.size() == 0 || unemployedWarriors == 0) {
+            if (army.size() == 0 || unemployedWarriors == 0) {
                 cout << "NONE" << endl;
             }
 
@@ -357,10 +375,10 @@ int main() {
                 delete nobles[i];
             }
             nobles.clear();
-            for (size_t i = 0; i < warriors.size(); ++i) {
-                delete warriors[i];
+            for (size_t i = 0; i < army.size(); ++i) {
+                delete army[i];
             }
-            warriors.clear();
+            army.clear();
         }
         else {
             cerr << "Unknown command: " << command << endl;
@@ -397,17 +415,17 @@ ostream& operator<<(ostream& os, const Noble& noble) {
 }
 
 /**
- * @brief Get a warrior from a vector of warriors
+ * @brief Get a warrior from a vector of army
  *
  * @param name the name of the warrior to get
- * @param warriors the vector of warriors
+ * @param army the vector of army
  * @return Warrior* the warrior with the given name,
  *         or nullptr if it does not exist
  */
-Warrior* getWarrior(const string& name, const vector<Warrior*>& warriors) {
-    for (size_t i = 0; i < warriors.size(); ++i) {
-        if (warriors[i]->getName() == name) {
-            return warriors[i];
+Warrior* getWarrior(const string& name, const vector<Warrior*>& army) {
+    for (size_t i = 0; i < army.size(); ++i) {
+        if (army[i]->getName() == name) {
+            return army[i];
         }
     }
     return nullptr;
