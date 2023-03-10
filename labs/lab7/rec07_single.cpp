@@ -22,7 +22,7 @@ public:
     const string& getName() const;
     bool addStudent(Student*);
     void removeStudentsFromCourse();
-    const vector<Student*>& getStudents() const;
+    
 
 private:
     string name;
@@ -40,7 +40,6 @@ public:
     // Student method needed by Course
     void removedFromCourse(Course*);
 
-    const vector<Course*>& getCourses() const;
 
 private:
     string name;
@@ -147,10 +146,6 @@ void Student::removedFromCourse(Course* course) {
     }
 }
 
-const vector<Course*>& Student::getCourses() const {
-    return courses;
-}
-
 Course::Course(const string& courseName): name(courseName) {}
 
 const string& Course::getName() const {
@@ -172,10 +167,6 @@ void Course::removeStudentsFromCourse() {
         students[i]->removedFromCourse(this);
     }
     students.clear();
-}
-
-const vector<Student*>& Course::getStudents() const {
-    return students;
 }
 
 Registrar::Registrar() {}
@@ -256,42 +247,45 @@ size_t Registrar::findCourse(const string& courseName) const {
     return courses.size();
 }
 
-ostream& operator<<(ostream& os, const Registrar& rhs) {
-    os << "Registrar's Report" << endl;
-    os << "Courses:" << endl;
-    for (size_t i = 0; i < rhs.courses.size(); ++i) {
-        os << rhs.courses[i]->getName() << ": ";
-        const vector<Student*>& students = rhs.courses[i]->getStudents();
-        if (students.size() == 0) {
-            os << "No Students";
-        }
-        else {
-            for (size_t j = 0; j < students.size(); ++j) {
-                os << students[j]->getName();
-                if (j != students.size() - 1) {
-                    os << ", ";
-                }
+ostream& operator<<(ostream& os, const Student& rhs) {
+    os << rhs.name << ": ";
+    if (rhs.courses.size() == 0) {
+        os << "No Courses";
+    } else {
+        for (size_t i = 0; i < rhs.courses.size(); ++i) {
+            os << rhs.courses[i]->getName();
+            if (i != rhs.courses.size() - 1) {
+                os << ", ";
             }
         }
-        os << endl;
-    }
-    os << "Students:" << endl;
-    for (size_t i = 0; i < rhs.students.size(); ++i) {
-        os << rhs.students[i]->getName() << ": ";
-        const vector<Course*>& courses = rhs.students[i]->getCourses();
-        if (courses.size() == 0) {
-            os << "No Courses";
-        }
-        else {
-            for (size_t j = 0; j < courses.size(); ++j) {
-                os << courses[j]->getName();
-                if (j != courses.size() - 1) {
-                    os << ", ";
-                }
-            }
-        }
-        os << endl;
     }
     return os;
 }
 
+ostream& operator<<(ostream& os, const Course& rhs) {
+    os << rhs.name << ": ";
+    if (rhs.students.size() == 0) {
+        os << "No Students";
+    } else {
+        for (size_t i = 0; i < rhs.students.size(); ++i) {
+            os << rhs.students[i]->getName();
+            if (i != rhs.students.size() - 1) {
+                os << ", ";
+            }
+        }
+    }
+    return os;
+}
+
+ostream& operator<<(ostream& os, const Registrar& rhs) {
+    os << "Registrar's Report" << endl;
+    os << "Courses:" << endl;
+    for (size_t i = 0; i < rhs.courses.size(); ++i) {
+        os << *rhs.courses[i] << endl;
+    }
+    os << "Students:" << endl;
+    for (size_t i = 0; i < rhs.students.size(); ++i) {
+        os << *rhs.students[i] << endl;
+    }
+    return os;
+}
