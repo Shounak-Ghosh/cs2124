@@ -75,9 +75,9 @@ public:
     // Copy constructor
     Directory(const Directory& rhs) : company(rhs.company), size(rhs.size), capacity(rhs.capacity) {
         cout << "Directory copy constructor called" << endl;
-        entries = new Entry*[capacity];
+        entries = new Entry*[capacity]; // allocating memory via new[]
         for (size_t i = 0; i < size; ++i) {
-            entries[i] = new Entry(*rhs.entries[i]);
+            entries[i] = new Entry(*rhs.entries[i]); // allocating memory via new
         }
     }
 
@@ -85,9 +85,9 @@ public:
     ~Directory() {
         cout << "Directory destructor called" << endl;
         for (size_t i = 0; i < size; ++i) {
-            delete entries[i];
+            delete entries[i]; // deleting memory allocated via new
         }
-        delete [] entries;
+        delete[] entries; // deleting memory allocated via new[]
     }
 
     // Copy assignment operator

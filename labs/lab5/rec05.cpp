@@ -4,6 +4,8 @@
 
  */
 
+//TODO: add doc comments
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,7 +23,7 @@ private:
           StudentRecord(const string& name): name(name), grades(14, -1) {}
 
           // copy constructor
-          StudentRecord(const StudentRecord& rhs): name(rhs.name), grades(rhs.grades) {}
+          // StudentRecord(const StudentRecord& rhs): name(rhs.name), grades(rhs.grades) {}
 
           const string& getName() const { return name; }
 
@@ -39,6 +41,10 @@ private:
 
      public:
           TimeSlot(const string& day, unsigned time): day(day), time(time) {}
+
+          TimeSlot(const TimeSlot& rhs): day(rhs.day), time(rhs.time) {}
+
+
           friend ostream& operator<<(ostream& os, const TimeSlot& timeSlot);
      };
 
