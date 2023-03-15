@@ -6,6 +6,8 @@ using namespace std;
 using namespace BrooklynPoly;
 
 
+// g++ rec07.cpp student.cpp registrar.cpp course.cpp to build 
+// ./a.out to run
 int main() {
 
     Registrar registrar;
