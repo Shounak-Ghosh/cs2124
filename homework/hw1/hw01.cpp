@@ -40,11 +40,11 @@ int main() {
     }
     infile.close(); // close the file
 
-
+    // TODO: why is the looping not lines.size()-1 and i >= 0 ?
     // size_t is an unsigned integer type used for array indexing
     // loop through the lines in reverse order and decrypt,
     // as per the problem statement
-    for (size_t i = lines.size(); i > 0; i--) {
+    for (size_t i = lines.size(); i > 0; --i) {
         decrypt_string(lines[i - 1], shift);
         cout << lines[i - 1] << endl;
     }

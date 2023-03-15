@@ -73,6 +73,7 @@ int main() {
             cerr << "Error: invalid command" << endl;
         }
     }
+    infile.close();
     return 0;
 }
 
