@@ -6,12 +6,29 @@
 using namespace std;
 
 namespace WarriorCraft {
+    /**
+     * @brief Construct a new Noble:: Noble object
+     *
+     * @param name the name of the Noble
+     */
     Noble::Noble(const string& name): name(name), strength(0), alive(true) {}
 
+    /**
+     * @brief Get the name of the Noble
+     *
+     * @return const string& the name of the Noble
+     */
     const string& Noble::getName() const {
         return name;
     }
 
+    /**
+     * @brief Hire a warrior
+     * 
+     * @param warrior the warrior to be hired
+     * @return true if the warrior was successfully hired,
+     *         false otherwise
+     */
     bool Noble::hire(Warrior& warrior) {
         if (!alive) {
             cout << name << " is dead -- they cannot hire anymore." << endl;
@@ -29,6 +46,13 @@ namespace WarriorCraft {
         }
     }
 
+    /**
+     * @brief Fire a warrior
+     *
+     * @param warrior the warrior to be fired
+     * @return true if the warrior was successfully fired
+     * @return false otherwise
+     */
     bool Noble::fire(Warrior& warrior, bool runaway) {
         size_t warriorPosition = army.size();
         for (size_t i = 0; i < army.size(); ++i) {
@@ -57,6 +81,11 @@ namespace WarriorCraft {
         }
     }
 
+    /**
+     * @brief Set the strength of all the noble's warriors to 0,
+     *        the noble's strength to 0, and the noble's alive status to false
+     * 
+     */
     void Noble::uponDeath() {
         for (size_t i = 0; i < army.size(); ++i) {
             army[i]->setStrength(0);
@@ -65,6 +94,11 @@ namespace WarriorCraft {
         alive = false;
     }
 
+    /**
+     * @brief Do battle with another Noble
+     * 
+     * @param otherNoble the other Noble to do battle with
+     */
     void Noble::battle(Noble& otherNoble) {
         cout << name << " battles " << otherNoble.name << endl;
         if (!alive && !otherNoble.alive) {
@@ -102,6 +136,13 @@ namespace WarriorCraft {
         }
     }
 
+    /**
+     * @brief Overload the << operator for Noble
+     * 
+     * @param os the output stream
+     * @param noble the Noble to be output 
+     * @return ostream& the output stream
+     */
     ostream& operator<<(ostream& os, const Noble& noble) {
         os << noble.name << " has an army of " << noble.army.size() << endl;
         for (size_t i = 0; i < noble.army.size(); ++i) {

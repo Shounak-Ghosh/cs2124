@@ -7,10 +7,10 @@ namespace WarriorCraft {
     class Noble; 
     class Warrior {
     public:
-        Warrior(const std::string& name, int strength);
+        Warrior(const std::string& name, double strength);
         const std::string& getName() const;
-        const int getStrength() const;
-        void setStrength(int strength);
+        const double getStrength() const;
+        void setStrength(double strength);
         const Noble* getEmployer() const;
         void setEmployer(Noble* employer);
         bool isHired() const;
@@ -18,7 +18,7 @@ namespace WarriorCraft {
         friend std::ostream& operator<<(std::ostream& os, const Warrior& warrior);
     private:
         std::string name;
-        int strength;
+        double strength;
         Noble* employer;
     };
 }
