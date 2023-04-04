@@ -1,0 +1,51 @@
+
+==========
+Nobles: 
+Sam has an army of size: 1
+	Samantha has strength 200
+Randolf the Elder has strength: 250
+Janet has an army of size: 2
+	TuckTuckTheHardy has strength 100
+	TuckTuckTheStout has strength 80
+Barclay the Bold has strength: 300
+Joe has an army of size: 0
+
+==========
+Joe battles Randolf the Elder
+Ugh!
+Randolf the Elder defeats Joe
+Joe battles Sam
+TWANG!  Samantha says: Take that in the name of my lord, Sam
+He's dead Sam
+Janet battles Barclay the Bold
+CLANG!  TuckTuckTheHardy says: Take that in the name of my lord, Janet
+CLANG!  TuckTuckTheStout says: Take that in the name of my lord, Janet
+Ugh!
+Barclay the Bold defeats Janet
+Janet battles Barclay the Bold
+Ugh!
+He's dead Barclay the Bold
+Sam battles Barclay the Bold
+TWANG!  Samantha says: Take that in the name of my lord, Sam
+TWANG!  Thorapleth says: Take that in the name of my lord, Sam
+TWANG!  Pethora says: Take that in the name of my lord, Sam
+POOF!
+Ugh!
+Sam defeats Barclay the Bold
+Samantha flees in terror, abandoning his lord, Sam
+Thorapleth, you don't work for me anymore ! -- Sam.
+Joe battles Barclay the Bold
+Oh, NO!  They're both dead!  Yuck!
+
+==========
+Nobles: 
+Sam has an army of size: 2
+	Pethora has strength 36.9565
+	Merlin has strength 110.87
+Randolf the Elder has strength: 250
+Janet has an army of size: 2
+	TuckTuckTheHardy has strength 0
+	TuckTuckTheStout has strength 0
+Barclay the Bold has strength: 0
+Joe has an army of size: 0
+==========
