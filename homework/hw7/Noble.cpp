@@ -33,25 +33,18 @@ namespace WarriorCraft {
             cout << "He's dead, " << name << endl;
         }
         else {
+            battleCry();
+            other.battleCry();
+            double ratio = other.strength / strength;
+            postBattle(ratio);
+            other.postBattle(1 / ratio);
             if (strength > other.strength) {
-                battleCry();
-                other.battleCry();
-                double ratio = other.strength / strength;
-                postBattle(ratio);
-                other.postBattle(1 / ratio);
                 cout << name << " defeats " << other.name << endl;
             }
             else if (strength < other.strength) {
-                battleCry();
-                other.battleCry();
-                double ratio = strength / other.strength;
-                other.postBattle(ratio);
-                postBattle(1 / ratio);
                 cout << other.name << " defeats " << name << endl;
             }
             else {
-                postBattle(1);
-                other.postBattle(1);
                 cout << "Mutual Annihilation: " << name << " and " << other.name << " die at each other's hands" << endl;
             }
         }
@@ -83,7 +76,7 @@ namespace WarriorCraft {
         for (size_t i = 0; i < army.size(); ++i) {
             if (army[i] == &protector) {
                 if (!runaway)
-                    cout << protector.getName() << ", you're fired! -- " << name << endl;
+                    cout << protector.getName() << ", you don't work for me anymore ! -- " << name << endl;
                 strength -= protector.getStrength();
                 protector.setLord(nullptr);
                 for (size_t j = i; j < army.size() - 1; ++j) {

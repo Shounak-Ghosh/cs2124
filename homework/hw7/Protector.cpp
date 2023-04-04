@@ -30,6 +30,7 @@ namespace WarriorCraft {
 
     bool Protector::runaway() {
         if (lord != nullptr) {
+            cout << name << " flees in terror, abandoning his lord, " << lord->getName() << endl;
             lord->fires(*this,true);
             lord = nullptr;
             return true;
