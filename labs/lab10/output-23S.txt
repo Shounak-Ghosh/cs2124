@@ -1,0 +1,98 @@
+P A R T  O N E
+Define some instruments ---------------------------------------
+Define the MILL -----------------------------------------------
+The MILL before adding instruments:
+The MILL has the following instruments: None
+
+Put the instruments into the MILL -----------------------------
+To make a sound... blow on a mouthpiece of size 12
+To make a sound... bow a string with pitch 567
+To make a sound... blow on a mouthpiece of size 4
+To make a sound... hit me!
+To make a sound... bow a string with pitch 673
+To make a sound... hit me!
+
+The MILL after adding some instruments:
+The MILL has the following instruments: 
+	Trumpet: 12
+	Violin: 567
+	Trombone: 4
+	Drum
+	Cello: 673
+	Cymbal
+
+Daily test ----------------------------------------------------
+dailyTestPlay()
+To make a sound... blow on a mouthpiece of size 12
+To make a sound... bow a string with pitch 567
+To make a sound... blow on a mouthpiece of size 4
+To make a sound... hit me!
+To make a sound... bow a string with pitch 673
+To make a sound... hit me!
+
+Define some Musicians------------------------------------------
+TESTING: groucho.acceptInstr(mill.loanOut());---------------
+Groucho has no instr
+To make a sound... blow on a mouthpiece of size 12
+
+dailyTestPlay()
+To make a sound... bow a string with pitch 567
+To make a sound... blow on a mouthpiece of size 4
+To make a sound... hit me!
+To make a sound... bow a string with pitch 673
+To make a sound... hit me!
+
+To make a sound... blow on a mouthpiece of size 12
+To make a sound... blow on a mouthpiece of size 12
+To make a sound... bow a string with pitch 567
+To make a sound... blow on a mouthpiece of size 12
+
+dailyTestPlay()
+To make a sound... blow on a mouthpiece of size 4
+To make a sound... hit me!
+To make a sound... bow a string with pitch 673
+To make a sound... hit me!
+
+The MILL after giving out some instruments:
+The MILL has the following instruments: 
+	Trombone: 4
+	Drum
+	Cello: 673
+	Cymbal
+
+TESTING: mill.receiveInstr(*groucho.giveBackInstr()); ------
+To make a sound... bow a string with pitch 567
+TESTING: mill.receiveInstr(*harpo.giveBackInstr()); ------
+To make a sound... blow on a mouthpiece of size 12
+
+dailyTestPlay()
+To make a sound... bow a string with pitch 567
+To make a sound... blow on a mouthpiece of size 12
+To make a sound... blow on a mouthpiece of size 4
+To make a sound... hit me!
+To make a sound... bow a string with pitch 673
+To make a sound... hit me!
+
+The MILL at the end of Part One:
+The MILL has the following instruments: 
+	Violin: 567
+	Trumpet: 12
+	Trombone: 4
+	Drum
+	Cello: 673
+	Cymbal
+
+P A R T  T W O
+orch performs
+
+To make a sound... blow on a mouthpiece of size 12
+orch performs
+ScreechBlatToot
+orch performs
+ScreechBlatToot
+orch performs
+SquawkScreechBlatTootCrash
+orch performs
+SquawkScreechBlatTootCrashBoom
+
+The MILL has the following instruments: None
