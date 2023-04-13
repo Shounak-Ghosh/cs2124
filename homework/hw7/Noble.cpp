@@ -21,6 +21,10 @@ namespace WarriorCraft {
         this->strength = strength;
     }
 
+    bool Noble::isAlive() const {
+        return alive;
+    }
+
     void Noble::battle(Noble& other) {
         cout << name << " battles " << other.name << endl;
         if (!alive && !other.alive) {
@@ -63,10 +67,10 @@ namespace WarriorCraft {
     Lord::Lord(const string& name): Noble(name) {}
 
     bool Lord::hires(Protector& protector) {
-        if (alive && protector.getLord() == nullptr) {
+        if (isAlive() && protector.getLord() == nullptr) {
             army.push_back(&protector);
             protector.setLord(this);
-            strength += protector.getStrength();
+            setStrength(getStrength() + protector.getStrength());
             return true;
         }
         return false; // protector already has a lord
@@ -76,8 +80,8 @@ namespace WarriorCraft {
         for (size_t i = 0; i < army.size(); ++i) {
             if (army[i] == &protector) {
                 if (!runaway)
-                    cout << protector.getName() << ", you don't work for me anymore ! -- " << name << endl;
-                strength -= protector.getStrength();
+                    cout << protector.getName() << ", you don't work for me anymore ! -- " << getName() << endl;
+                setStrength(getStrength() - protector.getStrength());
                 protector.setLord(nullptr);
                 for (size_t j = i; j < army.size() - 1; ++j) {
                     army[j] = army[j + 1];
@@ -86,7 +90,7 @@ namespace WarriorCraft {
                 return true;
             }
         }
-        cout << "Couldn't find " << protector.getName() << " in " << name << "'s army!" << endl;
+        cout << "Couldn't find " << protector.getName() << " in " << getName() << "'s army!" << endl;
         return false;
     }
 
@@ -116,13 +120,8 @@ namespace WarriorCraft {
         Noble::postBattle(ratio);
     }
 
-    // ostream& operator<<(ostream& os, const Noble& noble) {
-    //     os << noble.name << " has an army of " << noble.strength << endl;
-    //     return os;
-    // }
-
     ostream& operator<<(ostream& os, const Lord& noble) {
-        os << noble.name << " has an army of size: " << noble.army.size();
+        os << noble.getName() << " has an army of size: " << noble.army.size();
         for (size_t i = 0; i < noble.army.size(); ++i) {
             os << "\n\t" << *noble.army[i];
         }
@@ -130,7 +129,7 @@ namespace WarriorCraft {
     }
 
     ostream& operator<<(ostream& os, const PersonWithStrengthToFight& noble) {
-        os << noble.name << " has strength: " << noble.strength;
+        os << noble.getName() << " has strength: " << noble.getStrength();
         return os;
     }
 

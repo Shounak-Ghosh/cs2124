@@ -12,11 +12,12 @@ namespace WarriorCraft {
         std::string getName() const;
         double getStrength() const;
         void setStrength(double strength);
+        bool isAlive() const;
         void battle(Noble& other);
         virtual void battleCry() const = 0;
         virtual void postBattle(double ratio);
         friend std::ostream& operator<<(std::ostream& os, const Noble& noble);
-    protected:
+    private:
         std::string name;
         double strength;
         bool alive;

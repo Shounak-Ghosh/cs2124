@@ -39,7 +39,7 @@ namespace WarriorCraft {
     }
 
     ostream& operator<<(ostream& os, const Protector& protector) {
-        os << protector.name << ": " << protector.strength;
+        os << protector.name << " has strength " << protector.strength;
         return os;
     }
 
@@ -54,13 +54,13 @@ namespace WarriorCraft {
     Archer::Archer(const string& name, double strength): Warrior(name, strength) {}
 
     void Archer::battleCry() const {
-        cout << "TWANG! " << name << " says: Take that in the name of my lord, " << getLord()->getName() << endl;
+        cout << "TWANG! " << getName() << " says: Take that in the name of my lord, " << getLord()->getName() << endl;
     }
 
     Swordsman::Swordsman(const string& name, double strength): Warrior(name, strength) {}
 
     void Swordsman::battleCry() const {
-        cout << "CLANG! " << name << " says: Take that in the name of my lord, " << getLord()->getName() << endl;
+        cout << "CLANG! " << getName() << " says: Take that in the name of my lord, " << getLord()->getName() << endl;
     }
 
 }

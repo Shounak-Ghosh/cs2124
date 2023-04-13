@@ -17,7 +17,7 @@ namespace WarriorCraft {
         bool runaway();
         virtual void battleCry() const = 0;
         friend std::ostream& operator<<(std::ostream& os, const Protector& protector);
-    protected:
+    private:
         std::string name;
         double strength;
         bool alive;
