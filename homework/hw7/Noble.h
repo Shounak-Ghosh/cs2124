@@ -1,3 +1,9 @@
+/**
+ * @file Noble.h
+ * @author Shounak Ghosh
+ * @brief Header file for Noble and derived classes
+ * @date 2023-04-13
+ */
 #include <string>
 #include <vector>
 
@@ -7,21 +13,22 @@ namespace WarriorCraft {
     class Protector; // forward declaration
 
     class Noble {
-    public:
+    public: // methods accessible to all
         Noble(const std::string& name, double strength = 0);
-        std::string getName() const;
+        const std::string& getName() const;
         double getStrength() const;
-        void setStrength(double strength);
         bool isAlive() const;
         void battle(Noble& other);
+        friend std::ostream& operator<<(std::ostream& os, const Noble& noble);
+    protected: // methods only accessible to derived classes
+        virtual std::ostream& print(std::ostream& os) const = 0;
         virtual void battleCry() const = 0;
         virtual void postBattle(double ratio);
-        friend std::ostream& operator<<(std::ostream& os, const Noble& noble);
-    private:
+        void setStrength(double strength);
+    private: // fields only accessible to this class
         std::string name;
         double strength;
         bool alive;
-
     };
 
     class Lord: public Noble {
@@ -29,22 +36,19 @@ namespace WarriorCraft {
         Lord(const std::string& name);
         bool hires(Protector& protector);
         bool fires(Protector& protector, bool runaway = false);
+    private: // methods only accessible to this class
         void battleCry() const;
         void postBattle(double ratio);
-        friend std::ostream& operator<<(std::ostream& os, const Lord& noble);
-    private:
+        std::ostream& print(std::ostream& os) const;
         std::vector<Protector*> army;
-
     };
 
     class PersonWithStrengthToFight: public Noble {
     public:
         PersonWithStrengthToFight(const std::string& name, double strength);
+    private:
         void battleCry() const;
-        void postBattle(double ratio);
-        friend std::ostream& operator<<(std::ostream& os, const PersonWithStrengthToFight& noble);
+        std::ostream& print(std::ostream& os) const;
     };
-
-
 }
 #endif //WARRIORCRAFT_NOBLE_H

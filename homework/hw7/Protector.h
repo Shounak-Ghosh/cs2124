@@ -1,3 +1,10 @@
+/**
+ * @file Protector.h
+ * @author Shounak Ghosh
+ * @brief Header file for Protector and derived classes
+ * @date 2023-04-13
+ * 
+ */
 #include <string>
 #include <vector>
 
@@ -9,11 +16,11 @@ namespace WarriorCraft {
     class Protector {
     public:
         Protector(const std::string& name, double strength);
-        std::string getName() const;
+        const std::string& getName() const;
         double getStrength() const;
         void setStrength(double strength);
+        Lord* const getLord() const;
         void setLord(Lord* lord);
-        Lord* getLord() const;
         bool runaway();
         virtual void battleCry() const = 0;
         friend std::ostream& operator<<(std::ostream& os, const Protector& protector);
@@ -22,8 +29,6 @@ namespace WarriorCraft {
         double strength;
         bool alive;
         Lord* lord;
-
-
     };
 
     class Wizard: public Protector {
@@ -48,6 +53,5 @@ namespace WarriorCraft {
         Swordsman(const std::string& name, double strength);
         void battleCry() const;
     };
-
 }
 #endif //WARRIORCRAFT_PROTECTOR_H
