@@ -141,9 +141,6 @@ public:
         cerr << "No entry for " << name << endl;
         return 0;
     }
-
-
-
 private:	
     Entry** entries; // Notice the type!!! Pointer to Entry pointers.
     size_t size;
