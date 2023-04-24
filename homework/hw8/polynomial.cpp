@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cmath> // TODO remove pow; replace with Horner's method
 #include "polynomial.h"
 
 using namespace std;
@@ -54,11 +53,20 @@ Polynomial& Polynomial::operator=(const Polynomial& other) {
             otherTemp = otherTemp->next;
         }
         head = temp;
+        // reverse the order of the nodes so largest exponent is first
+        Node* prev = nullptr;
+        Node* curr = head;
+        while (curr != nullptr) {
+            Node* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
     }
     return *this;
 }
 
-// TODO fix this 
 Polynomial Polynomial::operator+(const Polynomial& other) const {
     Polynomial result;
     Node* temp = head;
@@ -133,11 +141,12 @@ bool Polynomial::operator!=(const Polynomial& other) const {
     return !(*this == other);
 }
 
+// evaluate the polynomial using Horner's method
 int Polynomial::evaluate(int x) const {
     int result = 0;
     Node* temp = head;
     while (temp != nullptr) {
-        result += temp->coeff * pow(x, temp->exp);
+        result = result * x + temp->coeff;
         temp = temp->next;
     }
     return result;
