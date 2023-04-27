@@ -1,9 +1,32 @@
+/**
+ * @file Polynomial.cpp
+ * @author Shounak Ghosh
+ * @brief Implementation of the Polynomial class
+ * @date 2023-04-27
+ * 
+ */
 #include <iostream>
 #include <vector>
 #include "polynomial.h"
 
 using namespace std;
 
+/**
+ * @brief Default constructor for a Polynomial object
+ * 
+ */
+Polynomial::Polynomial(): degree(0) {
+    // TODO: fix issue when head is new Node in default constructor
+    head =  nullptr;// new Node(0,0,nullptr);
+}
+
+/**
+ * @brief Constructor for a Polynomial object
+ * 
+ * @param coeffs a vector of coefficients for the polynomial 
+ *               with the first element being the coefficient 
+ *               of the highest degree term
+ */
 Polynomial::Polynomial(const vector<int>& coeffs) {
     Node* temp = nullptr;
     for (int i = coeffs.size() - 1; i >= 0; i--) {
@@ -12,13 +35,15 @@ Polynomial::Polynomial(const vector<int>& coeffs) {
         }
     }
     head = temp;
+    degree = head->exp;
 }
 
-Polynomial::Polynomial() {
-    head = nullptr;
-}
-
-Polynomial::Polynomial(const Polynomial& other) {
+/**
+ * @brief Copy constructor for a Polynomial object
+ * 
+ * @param other the Polynomial object to be copied from
+ */
+Polynomial::Polynomial(const Polynomial& other): degree(other.degree) {
     Node* temp = nullptr;
     Node* otherTemp = other.head;
     while (otherTemp != nullptr) {
@@ -38,8 +63,15 @@ Polynomial::Polynomial(const Polynomial& other) {
     head = prev;
 }
 
+/**
+ * @brief Assignment operator for a Polynomial object
+ * 
+ * @param other the Polynomial object to be copied from
+ * @return Polynomial& the Polynomial object that was assigned to
+ */
 Polynomial& Polynomial::operator=(const Polynomial& other) {
     if (this != &other) {
+        degree = other.degree;
         Node* temp = head;
         while (temp != nullptr) {
             Node* next = temp->next;
@@ -67,6 +99,12 @@ Polynomial& Polynomial::operator=(const Polynomial& other) {
     return *this;
 }
 
+/**
+ * @brief Overloaded addition operator for a Polynomial object
+ * 
+ * @param other the Polynomial object to be added to this 
+ * @return Polynomial the Polynomial object that is the sum of this and other
+ */
 Polynomial Polynomial::operator+(const Polynomial& other) const {
     Polynomial result;
     Node* temp = head;
@@ -106,9 +144,16 @@ Polynomial Polynomial::operator+(const Polynomial& other) const {
         curr = next;
     }
     result.head = prev;
+    result.degree = result.head->exp;
     return result;
 }
 
+/**
+ * @brief Overloaded addition assignment operator for a Polynomial object
+ * 
+ * @param other the Polynomial object to be added to this
+ * @return Polynomial& the Polynomial object that was added to
+ */
 Polynomial& Polynomial::operator+=(const Polynomial& other) {
     *this = *this + other;
     // reverse the nodes so that the largest exponent is first
@@ -124,7 +169,17 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
     return *this;
 }
 
+/**
+ * @brief Overloaded equality operator for a Polynomial object
+ * 
+ * @param other the Polynomial object to be compared to this
+ * @return true if the two polynomials match 
+ * @return false otherwise
+ */
 bool Polynomial::operator==(const Polynomial& other) const {
+    if (degree != other.degree) {
+        return false;
+    }
     Node* temp = head;
     Node* otherTemp = other.head;
     while (temp != nullptr && otherTemp != nullptr) {
@@ -137,13 +192,25 @@ bool Polynomial::operator==(const Polynomial& other) const {
     return temp == nullptr && otherTemp == nullptr;
 }
 
+/**
+ * @brief Overloaded inequality operator for a Polynomial object
+ * 
+ * @param other the Polynomial object to be compared to this
+ * @return true if the two polynomials do not match
+ * @return false otherwise
+ */
 bool Polynomial::operator!=(const Polynomial& other) const {
     return !(*this == other);
 }
 
-// evaluate the polynomial using Horner's method
-int Polynomial::evaluate(int x) const {
-    int result = 0;
+/**
+ * @brief Evaluates this polynomial using Horner's method
+ * 
+ * @param x the value to be evaluated at
+ * @return int 
+ */
+double Polynomial::evaluate(double x) const {
+    double result = 0;
     Node* temp = head;
     while (temp != nullptr) {
         result = result * x + temp->coeff;
@@ -152,6 +219,13 @@ int Polynomial::evaluate(int x) const {
     return result;
 }
 
+/**
+ * @brief Overloaded output operator for a Polynomial object
+ * 
+ * @param os the output stream
+ * @param poly the Polynomial object to be output
+ * @return ostream& the output stream
+ */
 ostream& operator<<(ostream& os, const Polynomial& poly) {
     Polynomial::Node* temp = poly.head;
     while (temp != nullptr) {
@@ -172,6 +246,7 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
         }
         temp = temp->next;
     }
+    os << "\tdegree: " << poly.degree;
     // TODO remove
     // while (temp != nullptr) {
     //     os << "(" << temp->coeff << " " << temp->exp << ")";
