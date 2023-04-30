@@ -25,11 +25,13 @@ public:
     Polynomial();
     Polynomial(const Polynomial& other);
     Polynomial& operator=(const Polynomial& other);
-    Polynomial operator+(const Polynomial& other) const;
+    Polynomial add(const Polynomial& other) const;
     Polynomial& operator+=(const Polynomial& other);
     bool operator==(const Polynomial& other) const;
     bool operator!=(const Polynomial& other) const;
     double evaluate(double x) const;
     friend std::ostream& operator<<(std::ostream& os, const Polynomial& poly);
 };
+
+Polynomial operator+(const Polynomial& lhs, const Polynomial& rhs);
 #endif

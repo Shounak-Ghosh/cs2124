@@ -15,10 +15,7 @@ using namespace std;
  * @brief Default constructor for a Polynomial object
  * 
  */
-Polynomial::Polynomial(): degree(0) {
-    // TODO: fix issue when head is new Node in default constructor
-    head =  nullptr;// new Node(0,0,nullptr);
-}
+Polynomial::Polynomial(): degree(0), head(new Node(0,0,nullptr)) {}
 
 /**
  * @brief Constructor for a Polynomial object
@@ -100,13 +97,16 @@ Polynomial& Polynomial::operator=(const Polynomial& other) {
 }
 
 /**
- * @brief Overloaded addition operator for a Polynomial object
+ * @brief Adds two Polynomial objects
  * 
  * @param other the Polynomial object to be added to this 
  * @return Polynomial the Polynomial object that is the sum of this and other
  */
-Polynomial Polynomial::operator+(const Polynomial& other) const {
+Polynomial Polynomial::add(const Polynomial& other) const {
     Polynomial result;
+    // delete the initial node that was created in the default constructor
+    delete result.head;
+    result.head = nullptr;
     Node* temp = head;
     Node* otherTemp = other.head;
     while (temp != nullptr && otherTemp != nullptr) {
@@ -149,6 +149,17 @@ Polynomial Polynomial::operator+(const Polynomial& other) const {
 }
 
 /**
+ * @brief Overloaded addition operator for two Polynomial objects
+ * 
+ * @param lhs the first Polynomial object to be added
+ * @param rhs the second Polynomial object to be added
+ * @return Polynomial the Polynomial object that is the sum of lhs and rhs
+ */
+Polynomial operator+(const Polynomial& lhs, const Polynomial& rhs) {
+    return lhs.add(rhs);
+}
+
+/**
  * @brief Overloaded addition assignment operator for a Polynomial object
  * 
  * @param other the Polynomial object to be added to this
@@ -156,16 +167,6 @@ Polynomial Polynomial::operator+(const Polynomial& other) const {
  */
 Polynomial& Polynomial::operator+=(const Polynomial& other) {
     *this = *this + other;
-    // reverse the nodes so that the largest exponent is first
-    Node* prev = nullptr;
-    Node* curr = head;
-    while (curr != nullptr) {
-        Node* next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
-    }
-    head = prev;
     return *this;
 }
 
@@ -246,7 +247,7 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
         }
         temp = temp->next;
     }
-    os << "\tdegree: " << poly.degree;
+    os << "\td:" << poly.degree;
     // TODO remove
     // while (temp != nullptr) {
     //     os << "(" << temp->coeff << " " << temp->exp << ")";
