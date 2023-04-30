@@ -3,7 +3,7 @@
  * @author Shounak Ghosh
  * @brief Header file for the Polynomial class
  * @date 2023-04-27
- * 
+ *
  */
 #include <iostream>
 #include <vector>
@@ -12,26 +12,25 @@
 #define POLYNOMIAL_H
 class Polynomial {
 private:
-    struct Node {
-        double coeff;
+    struct Term {
+        int coeff;
         int exp;
-        Node* next;
-        Node(int coeff, int exp, Node* next = nullptr): coeff(coeff), exp(exp), next(next) {}
+        Term* next;
+        Term(int coeff, int exp, Term* next = nullptr): coeff(coeff), exp(exp), next(next) {}
     };
-    Node* head;
+    Term* head;
     int degree;
 public:
     Polynomial(const std::vector<int>& coeffs);
     Polynomial();
     Polynomial(const Polynomial& other);
+    ~Polynomial();
     Polynomial& operator=(const Polynomial& other);
-    Polynomial add(const Polynomial& other) const;
     Polynomial& operator+=(const Polynomial& other);
-    bool operator==(const Polynomial& other) const;
-    bool operator!=(const Polynomial& other) const;
+    friend bool operator==(const Polynomial& lhs, const Polynomial& rhs);
     double evaluate(double x) const;
     friend std::ostream& operator<<(std::ostream& os, const Polynomial& poly);
 };
-
+bool operator !=(const Polynomial& lhs, const Polynomial& rhs);
 Polynomial operator+(const Polynomial& lhs, const Polynomial& rhs);
 #endif

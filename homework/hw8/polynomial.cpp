@@ -3,7 +3,7 @@
  * @author Shounak Ghosh
  * @brief Implementation of the Polynomial class
  * @date 2023-04-27
- * 
+ *
  */
 #include <iostream>
 #include <vector>
@@ -13,46 +13,77 @@ using namespace std;
 
 /**
  * @brief Default constructor for a Polynomial object
- * 
+ *
  */
-Polynomial::Polynomial(): degree(0), head(new Node(0,0,nullptr)) {}
+Polynomial::Polynomial(): degree(0), head(new Term(0, 0, nullptr)) {}
 
 /**
  * @brief Constructor for a Polynomial object
- * 
- * @param coeffs a vector of coefficients for the polynomial 
- *               with the first element being the coefficient 
+ *
+ * @param coeffs a vector of coefficients for the polynomial
+ *               with the first element being the coefficient
  *               of the highest degree term
  */
 Polynomial::Polynomial(const vector<int>& coeffs) {
-    Node* temp = nullptr;
-    for (int i = coeffs.size() - 1; i >= 0; i--) {
-        if (coeffs[i] != 0) {
-            temp = new Node(coeffs[i], (coeffs.size() - 1) - i, temp);
+    int numZeroes = 0;
+    for (size_t i = 0; i < coeffs.size(); ++i) {
+        if (coeffs[i] == 0) {
+            numZeroes++;
+        }
+        else {
+            break;
         }
     }
-    head = temp;
-    degree = head->exp;
+    Term* curs = nullptr; // short for cursor
+    for (size_t i = numZeroes; i < coeffs.size(); ++i) {
+        curs = new Term(coeffs[i], (coeffs.size() - 1) - i, curs);
+    }
+
+    // reverse the order of the nodes so largest exponent is first
+    Term* prev = nullptr;
+    Term* curr = curs;
+    while (curr != nullptr) {
+        Term* next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
+    degree = coeffs.size() - numZeroes - 1;
+}
+
+/**
+ * @brief Destructor for Polynomial object
+ * 
+ */
+Polynomial::~Polynomial() {
+    Term* curs = head;
+    while (curs != nullptr) {
+        Term* next = curs->next;
+        delete curs;
+        curs = next;
+    }
+    head = nullptr;
 }
 
 /**
  * @brief Copy constructor for a Polynomial object
- * 
+ *
  * @param other the Polynomial object to be copied from
  */
 Polynomial::Polynomial(const Polynomial& other): degree(other.degree) {
-    Node* temp = nullptr;
-    Node* otherTemp = other.head;
-    while (otherTemp != nullptr) {
-        temp = new Node(otherTemp->coeff, otherTemp->exp, temp);
-        otherTemp = otherTemp->next;
+    Term* curs = nullptr;
+    Term* otherCurs = other.head;
+    while (otherCurs != nullptr) {
+        curs = new Term(otherCurs->coeff, otherCurs->exp, curs);
+        otherCurs = otherCurs->next;
     }
-    head = temp;
+    head = curs;
     // reverse the order of the nodes so largest exponent is first
-    Node* prev = nullptr;
-    Node* curr = head;
+    Term* prev = nullptr;
+    Term* curr = head;
     while (curr != nullptr) {
-        Node* next = curr->next;
+        Term* next = curr->next;
         curr->next = prev;
         prev = curr;
         curr = next;
@@ -62,31 +93,31 @@ Polynomial::Polynomial(const Polynomial& other): degree(other.degree) {
 
 /**
  * @brief Assignment operator for a Polynomial object
- * 
+ *
  * @param other the Polynomial object to be copied from
  * @return Polynomial& the Polynomial object that was assigned to
  */
 Polynomial& Polynomial::operator=(const Polynomial& other) {
     if (this != &other) {
         degree = other.degree;
-        Node* temp = head;
-        while (temp != nullptr) {
-            Node* next = temp->next;
-            delete temp;
-            temp = next;
+        Term* curs = head;
+        while (curs != nullptr) {
+            Term* next = curs->next;
+            delete curs;
+            curs = next;
         }
-        temp = nullptr;
-        Node* otherTemp = other.head;
-        while (otherTemp != nullptr) {
-            temp = new Node(otherTemp->coeff, otherTemp->exp, temp);
-            otherTemp = otherTemp->next;
+        curs = nullptr;
+        Term* otherCurs = other.head;
+        while (otherCurs != nullptr) {
+            curs = new Term(otherCurs->coeff, otherCurs->exp, curs);
+            otherCurs = otherCurs->next;
         }
-        head = temp;
+        head = curs;
         // reverse the order of the nodes so largest exponent is first
-        Node* prev = nullptr;
-        Node* curr = head;
+        Term* prev = nullptr;
+        Term* curr = head;
         while (curr != nullptr) {
-            Node* next = curr->next;
+            Term* next = curr->next;
             curr->next = prev;
             prev = curr;
             curr = next;
@@ -97,161 +128,169 @@ Polynomial& Polynomial::operator=(const Polynomial& other) {
 }
 
 /**
- * @brief Adds two Polynomial objects
- * 
- * @param other the Polynomial object to be added to this 
- * @return Polynomial the Polynomial object that is the sum of this and other
- */
-Polynomial Polynomial::add(const Polynomial& other) const {
-    Polynomial result;
-    // delete the initial node that was created in the default constructor
-    delete result.head;
-    result.head = nullptr;
-    Node* temp = head;
-    Node* otherTemp = other.head;
-    while (temp != nullptr && otherTemp != nullptr) {
-        if (temp->exp == otherTemp->exp) {
-            if (temp->coeff + otherTemp->coeff != 0) {
-                result.head = new Node(temp->coeff + otherTemp->coeff, temp->exp, result.head);
-            }
-            temp = temp->next;
-            otherTemp = otherTemp->next;
-        }
-        else if (temp->exp > otherTemp->exp) {
-            result.head = new Node(temp->coeff, temp->exp, result.head);
-            temp = temp->next;
-        }
-        else {
-            result.head = new Node(otherTemp->coeff, otherTemp->exp, result.head);
-            otherTemp = otherTemp->next;
-        }
-    }
-    while (temp != nullptr) {
-        result.head = new Node(temp->coeff, temp->exp, result.head);
-        temp = temp->next;
-    }
-    while (otherTemp != nullptr) {
-        result.head = new Node(otherTemp->coeff, otherTemp->exp, result.head);
-        otherTemp = otherTemp->next;
-    }
-    // reverse the nodes so that the largest exponent is first
-    Node* prev = nullptr;
-    Node* curr = result.head;
-    while (curr != nullptr) {
-        Node* next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
-    }
-    result.head = prev;
-    result.degree = result.head->exp;
-    return result;
-}
-
-/**
  * @brief Overloaded addition operator for two Polynomial objects
- * 
+ *
  * @param lhs the first Polynomial object to be added
  * @param rhs the second Polynomial object to be added
  * @return Polynomial the Polynomial object that is the sum of lhs and rhs
  */
 Polynomial operator+(const Polynomial& lhs, const Polynomial& rhs) {
-    return lhs.add(rhs);
+    Polynomial result = lhs;
+    result += rhs;
+    return result;
 }
 
 /**
  * @brief Overloaded addition assignment operator for a Polynomial object
- * 
+ *
  * @param other the Polynomial object to be added to this
  * @return Polynomial& the Polynomial object that was added to
  */
 Polynomial& Polynomial::operator+=(const Polynomial& other) {
-    *this = *this + other;
+    Term* curs = head;
+    Term* otherCurs = other.head;
+    // perform addition
+    while (curs != nullptr && otherCurs != nullptr) {
+        if (curs->exp == otherCurs->exp) {
+            curs->coeff += otherCurs->coeff;
+            curs = curs->next;
+            otherCurs = otherCurs->next;
+        }
+        else if (curs->exp > otherCurs->exp) {
+            curs = curs->next;
+        }
+        else {
+            Term* newNode = new Term(otherCurs->coeff, otherCurs->exp, curs);
+            if (curs == head) {
+                head = newNode;
+            }
+            else {
+                Term* prev = head;
+                while (prev->next != curs) {
+                    prev = prev->next;
+                }
+                prev->next = newNode;
+            }
+            otherCurs = otherCurs->next;
+        }
+    }
+    // add remaining terms
+    while (otherCurs != nullptr) {
+        Term* newTerm = new Term(otherCurs->coeff, otherCurs->exp, curs);
+        if (curs == head) {
+            head = newTerm;
+        }
+        else {
+            Term* prev = head;
+            while (prev->next != curs) {
+                prev = prev->next;
+            }
+            prev->next = newTerm;
+        }
+        otherCurs = otherCurs->next;
+    }
+    // remove leading 0 coefficients
+    curs = head;
+    Term* prev = nullptr;
+    while (curs != nullptr) {
+        if (curs->coeff == 0) {
+            Term* next = curs->next;
+            delete curs;
+            curs = next;
+            if (prev == nullptr) {
+                head = curs;
+            }
+            else {
+                prev->next = curs;
+            }
+        }
+        else {
+            prev = curs;
+            curs = curs->next;
+        }
+    }
+    degree = head->exp;
     return *this;
 }
 
 /**
- * @brief Overloaded equality operator for a Polynomial object
- * 
- * @param other the Polynomial object to be compared to this
- * @return true if the two polynomials match 
+ * @brief Checks if two Polynomial objects are equal
+ *
+ * @param lhs the first Polynomial object to be compared
+ * @param rhs the second Polynomial object to be compared
+ * @return true if the two polynomials match
  * @return false otherwise
  */
-bool Polynomial::operator==(const Polynomial& other) const {
-    if (degree != other.degree) {
+bool operator==(const Polynomial& lhs, const Polynomial& rhs) {
+    if (lhs.degree != rhs.degree) {
         return false;
     }
-    Node* temp = head;
-    Node* otherTemp = other.head;
-    while (temp != nullptr && otherTemp != nullptr) {
-        if (temp->coeff != otherTemp->coeff || temp->exp != otherTemp->exp) {
+    Polynomial::Term* lhsCurs = lhs.head;
+    Polynomial::Term* rhsCurs = rhs.head;
+    while (lhsCurs != nullptr && rhsCurs != nullptr) {
+        if (lhsCurs->coeff != rhsCurs->coeff || lhsCurs->exp != rhsCurs->exp) {
             return false;
         }
-        temp = temp->next;
-        otherTemp = otherTemp->next;
+        lhsCurs = lhsCurs->next;
+        rhsCurs = rhsCurs->next;
     }
-    return temp == nullptr && otherTemp == nullptr;
+    return true;
 }
 
 /**
- * @brief Overloaded inequality operator for a Polynomial object
+ * @brief Checks if two Polynomial objects are not equal
  * 
- * @param other the Polynomial object to be compared to this
+ * @param lhs the first Polynomial object to be compared
+ * @param rhs the second Polynomial object to be compared
  * @return true if the two polynomials do not match
  * @return false otherwise
  */
-bool Polynomial::operator!=(const Polynomial& other) const {
-    return !(*this == other);
+bool operator!=(const Polynomial& lhs, const Polynomial& rhs) {
+    return !(lhs == rhs);
 }
 
 /**
  * @brief Evaluates this polynomial using Horner's method
- * 
+ *
  * @param x the value to be evaluated at
- * @return int 
+ * @return int
  */
 double Polynomial::evaluate(double x) const {
     double result = 0;
-    Node* temp = head;
-    while (temp != nullptr) {
-        result = result * x + temp->coeff;
-        temp = temp->next;
+    Term* curs = head;
+    while (curs != nullptr) {
+        result = result * x + curs->coeff;
+        curs = curs->next;
     }
     return result;
 }
 
 /**
  * @brief Overloaded output operator for a Polynomial object
- * 
+ *
  * @param os the output stream
  * @param poly the Polynomial object to be output
  * @return ostream& the output stream
  */
 ostream& operator<<(ostream& os, const Polynomial& poly) {
-    Polynomial::Node* temp = poly.head;
-    while (temp != nullptr) {
-        if (temp->coeff > 0 && temp != poly.head) {
-            os << "+";
-        }
-        if (temp->coeff == -1 && temp->exp != 0) {
-            os << "-";
-        }
-        else if (temp->coeff != 1 || temp->exp == 0) {
-            os << temp->coeff;
-        }
-        if (temp->exp != 0) {
-            os << "x";
-            if (temp->exp != 1) {
-                os << "^" << temp->exp;
+    for (Polynomial::Term* curs = poly.head; curs != nullptr; curs = curs->next) {
+        if (curs->coeff != 0 || curs->exp == 0) {
+            if (curs->coeff > 0 && curs != poly.head && curs->coeff > 0) {
+                os << "+";
+            }
+            if (curs->coeff == -1 && curs->exp != 0) {
+                os << "-";
+            }
+            else if (curs->coeff != 1 || curs->exp == 0) {
+                os << curs->coeff;
+            }
+            if (curs->exp != 0) {
+                os << "x";
+                if (curs->exp != 1) {
+                    os << "^" << curs->exp;
+                }
             }
         }
-        temp = temp->next;
     }
-    os << "\td:" << poly.degree;
-    // TODO remove
-    // while (temp != nullptr) {
-    //     os << "(" << temp->coeff << " " << temp->exp << ")";
-    //     temp = temp->next;
-    // }
     return os;
 }
