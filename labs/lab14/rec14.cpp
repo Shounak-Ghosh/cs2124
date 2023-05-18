@@ -96,6 +96,9 @@ bool parity(int n) {
 int towers(int n, char start, char spare, char end) {
     if (n == 1) // reached end of tower
         return 1;
+    // move n-1 disks from start to spare
+    // move 1 disk from start to end
+    // move n-1 disks from spare to end
     return towers(n - 1, start, end, spare) + towers(1, start, spare, end) + towers(n - 1, spare, start, end);
 }
 

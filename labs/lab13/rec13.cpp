@@ -14,7 +14,7 @@ using namespace std;
 
 // task 9
 void printList(const list<int>& l) {
-    for (list<int>::const_iterator i = l.begin(); i != l.end(); i++) {
+    for (list<int>::const_iterator i = l.begin(); i != l.end(); ++i) {
         cout << *i << " ";
     }
     cout << endl;

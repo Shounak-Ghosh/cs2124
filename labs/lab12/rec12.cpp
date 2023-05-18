@@ -140,7 +140,7 @@ public:
     }
 
     class iterator {
-        friend class List; // so List can access Node* current
+        friend class List; // so iterator can access Node* current
     public:
         iterator() {
             current = nullptr;
@@ -153,6 +153,12 @@ public:
         iterator& operator++() {
             current = current->next;
             return *this;
+        }
+
+        iterator operator++(int unused) {
+            iterator clone(*this);
+            current = current->next;
+            return clone;
         }
 
         iterator& operator--() {
@@ -175,6 +181,7 @@ public:
     private:
         Node* current;
     };
+
     iterator begin() {
         return iterator(head->next);
     }

@@ -274,6 +274,7 @@ double Polynomial::evaluate(double x) const {
  */
 ostream& operator<<(ostream& os, const Polynomial& poly) {
     for (Polynomial::Term* curs = poly.head; curs != nullptr; curs = curs->next) {
+        cout << "Reference:" << &*curs << endl;
         if (curs->coeff != 0 || curs->exp == 0) {
             if (curs->coeff > 0 && curs != poly.head && curs->coeff > 0) {
                 os << "+";
